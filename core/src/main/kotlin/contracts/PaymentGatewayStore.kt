@@ -1,7 +1,7 @@
 package app.contracts
 
-import app.entities.PaymentGateway
+import app.entities.Fee
 
 interface PaymentGatewayStore {
-    fun findOne(companyName: String): PaymentGateway?
+    fun findAllCompanyFees(companyName: String): List<Fee>
 }
