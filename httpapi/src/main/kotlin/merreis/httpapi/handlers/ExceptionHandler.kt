@@ -1,7 +1,7 @@
 package merreis.httpapi.handlers
 
-import errors.NotFoundError
-import errors.UseCaseError
+import core.errors.NotFoundError
+import core.errors.UseCaseError
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ControllerAdvice
@@ -31,8 +31,7 @@ class ExceptionHandler {
 
     @ExceptionHandler(value = [Exception::class, RuntimeException::class])
     fun handleRuntimeException(ex: UseCaseError, request: WebRequest): ResponseEntity<List<ErrorMessage>> {
-        val message = ex.message ?: dfMessage
-        val errorMessage = ErrorMessage(message)
+        val errorMessage = ErrorMessage(dfMessage)
         return ResponseEntity(listOf(errorMessage), HttpStatus.INTERNAL_SERVER_ERROR)
     }
 

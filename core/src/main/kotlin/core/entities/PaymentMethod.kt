@@ -1,4 +1,4 @@
-package entities
+package core.entities
 
 enum class PaymentMethod(val description: String) {
     PIX("Pix"),

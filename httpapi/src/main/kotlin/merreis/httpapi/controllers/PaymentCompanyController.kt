@@ -1,15 +1,15 @@
 package merreis.httpapi.controllers
 
-import contracts.PaymentGatewayStore
-import entities.Company
-import entities.Fee
-import entities.PaymentMethod
+import core.contracts.PaymentGatewayStore
+import core.entities.Company
+import core.entities.Fee
+import core.entities.PaymentMethod
+import core.usecases.payment.digest.PaymentCompanyDigesterExecutor
+import core.usecases.payment.digest.PaymentCompanyDigesterOutput
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import usecases.payment.digest.PaymentCompanyDigesterExecutor
-import usecases.payment.digest.PaymentCompanyDigesterOutput
 import java.math.BigDecimal
 
 class MockStore : PaymentGatewayStore {

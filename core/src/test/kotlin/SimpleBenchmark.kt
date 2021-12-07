@@ -1,8 +1,8 @@
-import contracts.PaymentGatewayStore
-import entities.Company
-import entities.Fee
-import entities.PaymentMethod
-import usecases.payment.digest.PaymentCompanyDigesterExecutor
+import core.contracts.PaymentGatewayStore
+import core.entities.Company
+import core.entities.Fee
+import core.entities.PaymentMethod
+import core.usecases.payment.digest.PaymentCompanyDigesterExecutor
 
 
 /**

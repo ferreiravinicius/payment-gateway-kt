@@ -1,8 +1,8 @@
-package usecases.payment.digest
+package core.usecases.payment.digest
 
-import contracts.PaymentGatewayStore
-import entities.Fee
-import errors.NotFoundError
+import core.contracts.PaymentGatewayStore
+import core.entities.Fee
+import core.errors.NotFoundError
 import java.math.RoundingMode
 
 class PaymentCompanyDigesterExecutor(private val store: PaymentGatewayStore) : PaymentCompanyDigesterUseCase {

@@ -1,10 +1,10 @@
-package usecases.payment.digest
+package core.usecases.payment.digest
 
-import contracts.PaymentGatewayStore
-import entities.Company
-import entities.Fee
-import entities.PaymentMethod
-import errors.NotFoundError
+import core.contracts.PaymentGatewayStore
+import core.entities.Company
+import core.entities.Fee
+import core.entities.PaymentMethod
+import core.errors.NotFoundError
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.BeforeEach

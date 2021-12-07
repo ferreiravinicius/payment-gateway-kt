@@ -1,4 +1,4 @@
-package usecases.payment.digest
+package core.usecases.payment.digest
 
 import java.math.BigDecimal
 
