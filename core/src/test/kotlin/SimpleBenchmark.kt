@@ -1,10 +1,8 @@
-package app
-
-import app.contracts.PaymentGatewayStore
-import app.entities.Company
-import app.entities.Fee
-import app.entities.PaymentMethod
-import app.usecases.payment.digest.PaymentCompanyDigesterExecutor
+import contracts.PaymentGatewayStore
+import entities.Company
+import entities.Fee
+import entities.PaymentMethod
+import usecases.payment.digest.PaymentCompanyDigesterExecutor
 
 
 /**
@@ -69,11 +67,7 @@ fun main() {
     val sut = PaymentCompanyDigesterExecutor(store)
 
     simpleMeasureTest {
-        val company = Company("testing")
-        sut.createDigesterOutput(listOf(
-            Fee(company = company, withdrawDays = 3, paymentMethod = PaymentMethod.PIX),
-            Fee(company = company, withdrawDays = 2, paymentMethod = PaymentMethod.PIX),
-            Fee(company = company, withdrawDays = 1, paymentMethod = PaymentMethod.PIX),
-        ))
+        val result = sut.digest("testing")
+        result.isSuccess
     }
 }

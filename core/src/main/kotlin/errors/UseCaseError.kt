@@ -1,4 +1,4 @@
-package app.errors
+package errors
 
 abstract class UseCaseError : Exception {
     constructor() : super()

@@ -1,11 +1,10 @@
 package usecases.payment.digest
 
-import app.contracts.PaymentGatewayStore
-import app.entities.Company
-import app.entities.Fee
-import app.entities.PaymentMethod
-import app.errors.NotFoundError
-import app.usecases.payment.digest.PaymentCompanyDigesterExecutor
+import contracts.PaymentGatewayStore
+import entities.Company
+import entities.Fee
+import entities.PaymentMethod
+import errors.NotFoundError
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.BeforeEach
@@ -13,11 +12,10 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import kotlin.test.assertEquals
-import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 @DisplayName("Testing use case that digest information about any payment gateway company")
-class PaymentCompanyDigesterUseCaseTest {
+class PaymentCompanyDigesterExecutorTest {
 
     private lateinit var storeMock: PaymentGatewayStore
     private lateinit var sut: PaymentCompanyDigesterExecutor
@@ -70,6 +68,8 @@ class PaymentCompanyDigesterUseCaseTest {
             Fee(company = company, withdrawDays = 3, paymentMethod = PaymentMethod.PIX),
             Fee(company = company, withdrawDays = 2, paymentMethod = PaymentMethod.PIX),
             Fee(company = company, withdrawDays = 1, paymentMethod = PaymentMethod.PIX),
+            Fee(company = company, withdrawDays = 1, installment = 2, paymentMethod = PaymentMethod.PIX),
+            Fee(company = company, withdrawDays = 1, installment = 3, paymentMethod = PaymentMethod.PIX),
         )
 
         every { storeMock.findAllCompanyFees(any()) } returns fees
@@ -81,8 +81,8 @@ class PaymentCompanyDigesterUseCaseTest {
             val paymentMethods = output.paymentMethods
             assertEquals(company.name, output.name)
             assertEquals(1, paymentMethods.size)
-            assertTrue(paymentMethods.first().hasMultipleWithdrawOptions)
-            assertFalse(paymentMethods.first().hasInstallmentAvailable)
+            assertEquals(3, paymentMethods.first().availableWithdraws.size)
+            assertEquals(3, paymentMethods.first().availableInstallments.size)
         }
     }
 }

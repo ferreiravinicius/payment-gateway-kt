@@ -1,6 +1,6 @@
-package app.contracts
+package contracts
 
-import app.entities.Fee
+import entities.Fee
 
 interface PaymentGatewayStore {
     fun findAllCompanyFees(companyName: String): List<Fee>

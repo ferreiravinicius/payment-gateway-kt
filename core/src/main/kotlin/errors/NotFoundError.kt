@@ -1,3 +1,3 @@
-package app.errors
+package errors
 
 class NotFoundError(message: String) : UseCaseError(message)

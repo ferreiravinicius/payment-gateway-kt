@@ -1,4 +1,4 @@
-package app.usecases.payment.digest
+package usecases.payment.digest
 
 sealed interface PaymentCompanyDigesterUseCase {
     fun digest(companyName: String): Result<PaymentCompanyDigesterOutput>

@@ -1,8 +1,9 @@
-package app.usecases.payment.digest
+package usecases.payment.digest
 
-import app.contracts.PaymentGatewayStore
-import app.entities.Fee
-import app.errors.NotFoundError
+import contracts.PaymentGatewayStore
+import entities.Fee
+import errors.NotFoundError
+import java.math.RoundingMode
 
 class PaymentCompanyDigesterExecutor(private val store: PaymentGatewayStore) : PaymentCompanyDigesterUseCase {
 
@@ -18,28 +19,25 @@ class PaymentCompanyDigesterExecutor(private val store: PaymentGatewayStore) : P
         return Result.success(digestOutput)
     }
 
-    fun createDigesterOutput(fees: List<Fee>): PaymentCompanyDigesterOutput {
-        val grouped = fees.groupBy { it.paymentMethod.name }
-        val paymentMethods = grouped.map { map ->
-            PaymentMethodDigesterOutput(
-                description = map.key,
-                fees = map.value.map { fee ->
-                    FeeDigesterOutput(
-                        installment = fee.installment,
-                        fixedAmount = fee.fixedAmount,
-                        withdrawDays = fee.withdrawDays,
-                        percentageAmount = fee.percentageValue,
-                    )
-                },
-                hasInstallmentAvailable = map.value.any { fee -> fee.installment > 1 },
-                hasMultipleWithdrawOptions = map.value.any { fee -> fee.withdrawDays != map.value.first().withdrawDays },
-            )
-        }
-
+    private fun createDigesterOutput(fees: List<Fee>): PaymentCompanyDigesterOutput {
         val currentCompany = fees.first().company
         return PaymentCompanyDigesterOutput(
             name = currentCompany.name,
-            paymentMethods = paymentMethods,
+            paymentMethods = fees.groupBy { it.paymentMethod }.map { item ->
+                PaymentMethodDigesterOutput(
+                    description = item.key.description,
+                    fees = item.value.map { fee ->
+                        FeeDigesterOutput(
+                            installment = fee.installment,
+                            withdrawDays = fee.withdrawDays,
+                            fixedAmount = fee.fixedAmount.setScale(2, RoundingMode.HALF_UP),
+                            percentageAmount = fee.percentageAmount.setScale(2, RoundingMode.HALF_UP),
+                        )
+                    },
+                    availableInstallments = item.value.map { fee -> fee.installment }.distinct(),
+                    availableWithdraws = item.value.map { fee -> fee.withdrawDays }.distinct(),
+                )
+            }
         )
     }
 }
